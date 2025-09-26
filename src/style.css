@@ -1,0 +1,21 @@
+:root {
+  --color-primary: #ffffff;
+  --color-bg: #f0f4f8;
+  --color-bg-button-blue: #008bfe;
+  --color-bg-button-red: #da3535ff;
+  --color-bg-button-green: #0dbe33ff;
+  --font: "Roboto", sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--color-primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: var(--color-bg);
+  background-color: var(--color-bg);
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
