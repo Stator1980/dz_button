@@ -1,5 +1,5 @@
 <script setup>
-const color_button = "button_red";
+const color_button = "button_green";
 </script>
 
 <template>
