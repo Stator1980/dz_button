@@ -1,9 +1,9 @@
 <script setup>
-const color_button = "button_green";
+const color_button = "button_blue";
 </script>
 
 <template>
-    <button :class ="color_button">
+    <button :class="color_button">
         <slot />
     </button>
 </template>
@@ -50,5 +50,4 @@ const color_button = "button_green";
     width: 335px;
     height: 68px;
 }
-
 </style>
