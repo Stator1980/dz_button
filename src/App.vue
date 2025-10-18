@@ -8,6 +8,27 @@ let rate = ref({
     rating: "99",
 });
 
+const cards = ref([
+    {
+        word: "dust-coat",
+        translation: "Караван верблюдов",
+        state: "closed",
+        status: "pending",
+    },
+    {
+        word: "carom",
+        translation: "свинец",
+        state: "closed",
+        status: "pending",
+    },
+    {
+        word: "car",
+        translation: "Автомобиль",
+        state: "closed",
+        status: "pending",
+    },
+]);
+
 function getRotate() {
     console.log("ROTATE");
 }
@@ -26,6 +47,7 @@ function getTranslateSuccess() {
         <Score v-bind="rate" />
         <!-- <Button>Начать игру </Button> -->
         <Card
+            v-bind="cards[2]"
             @card-rotate="getRotate"
             @card-wrong="getTranslateWrong"
             @cardSuccess="getTranslateSuccess"
