@@ -1,7 +1,12 @@
 <script setup>
 // import Button from "./components/Button.vue";
+import { ref } from "vue";
 import Card from "./components/Card.vue";
 import Score from "./components/Score.vue";
+
+let rate = ref({
+    rating: "99",
+});
 
 function getRotate() {
     console.log("ROTATE");
@@ -18,7 +23,7 @@ function getTranslateSuccess() {
 
 <template>
     <div class="content">
-        <Score />
+        <Score v-bind="rate" />
         <!-- <Button>Начать игру </Button> -->
         <Card
             @card-rotate="getRotate"

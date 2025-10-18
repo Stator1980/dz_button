@@ -8,37 +8,46 @@ import IconTick from "../icons/IconTick.vue";
 import IconSuccess from "../icons/IconSuccess.vue";
 
 const {
-    wordEng = "dust-coat",
-    wordRus = "Верблюд",
+    word = "dust-coat",
+    translation = "Караван верблюдов",
     countCard = "01",
 } = defineProps({
-    wordEng: String,
-    wordRus: String,
+    word: String,
+    translation: String,
     countCard: String,
 });
 
-const isShow = ref(true);
-const isShowBtClose = ref(false);
-const isShowBtSuccess = ref(false);
-const isShowLbFinish = ref(false);
+const sprState = {
+    CLOSED: "closed ",
+    OPENED: "opened",
+};
+
+const sprStatus = {
+    SUCCESS: "success",
+    FAIL: "fail",
+    PENDING: "pending",
+};
+
+const state = ref(sprState.OPENED);
+const status = ref(sprStatus.PENDING);
 
 const emit = defineEmits(["cardRotate", "cardWrong", "cardSuccess"]);
 
 function rotate() {
-    isShow.value = !isShow.value;
-    //  console.log("1 - " + vShow);
+    if (state.value == sprState.OPENED) {
+        state.value = sprState.CLOSED;
+    } else state.value = sprState.OPENED;
+
     emit("cardRotate");
 }
 
 function translateWrong() {
-    isShowLbFinish.value = ref(true);
-    isShowBtClose.value = !isShowBtClose.value;
+    status.value = sprStatus.FAIL;
     emit("cardWrong");
 }
 
 function translateSuccess() {
-    isShowLbFinish.value = ref(true);
-    isShowBtSuccess.value = !isShowBtSuccess.value;
+    status.value = sprStatus.SUCCESS;
     emit("cardSuccess");
 }
 </script>
@@ -50,43 +59,58 @@ function translateSuccess() {
                 <Label>{{ countCard }}</Label>
                 <IconCloseBig
                     :class="
-                        (isShowBtClose && 'top-icon-close') ||
+                        (status === sprStatus.FAIL && 'top-icon-close') ||
                         'card-rotate-hide'
                     "
                 />
                 <IconSuccess
                     :class="
-                        (isShowBtSuccess && 'top-icon-close') ||
+                        (status === sprStatus.SUCCESS && 'top-icon-close') ||
                         'card-rotate-hide'
                     "
                 />
             </div>
 
-            <Label class="middle-label">{{ isShow ? wordEng : wordRus }}</Label>
+            <Label class="middle-label">{{
+                state === sprState.OPENED ? word : translation
+            }}</Label>
             <Label
                 :class="
-                    (isShowLbFinish && 'bottom-label') || 'card-rotate-hide'
+                    (status != sprStatus.PENDING && 'bottom-label') ||
+                    'card-rotate-hide'
                 "
                 >Завершено</Label
             >
 
             <div
-                :class="(isShowLbFinish && 'card-rotate-hide') || 'bottom-card'"
+                :class="
+                    (status != sprStatus.PENDING && 'card-rotate-hide') ||
+                    'bottom-card'
+                "
             >
                 <Button
-                    :class="(isShow && 'card-rotate') || 'card-rotate-hide'"
+                    :class="
+                        (state === sprState.OPENED && 'card-rotate') ||
+                        'card-rotate-hide'
+                    "
                     @click="rotate()"
                     >Перевернуть</Button
                 >
                 <div class="bottom-bt">
                     <Button
-                        :class="(isShow && 'card-rotate-hide') || 'card-close'"
+                        :class="
+                            (state === sprState.OPENED && 'card-rotate-hide') ||
+                            'card-close'
+                        "
                         @click="translateWrong()"
                     >
                         <IconClose />
                     </Button>
                     <Button
-                        :class="(isShow && 'card-rotate-hide') || 'card-close'"
+                        :class="
+                            (state === sprState.OPENED && 'card-rotate-hide') ||
+                            'card-close'
+                        "
                         @click="translateSuccess()"
                     >
                         <IconTick />
