@@ -27,6 +27,12 @@ const cards = ref([
         state: "closed",
         status: "pending",
     },
+    {
+        word: "vino",
+        translation: "Вино",
+        state: "closed",
+        status: "pending",
+    },
 ]);
 
 function getRotate() {
@@ -46,12 +52,15 @@ function getTranslateSuccess() {
     <div class="content">
         <Score v-bind="rate" />
         <!-- <Button>Начать игру </Button> -->
-        <Card
-            v-bind="cards[2]"
-            @card-rotate="getRotate"
-            @card-wrong="getTranslateWrong"
-            @cardSuccess="getTranslateSuccess"
-        />
+        <div class="card-row">
+            <Card
+                v-for="item in cards"
+                v-bind="item"
+                @card-rotate="getRotate"
+                @card-wrong="getTranslateWrong"
+                @csardSuccess="getTranslateSuccess"
+            />
+        </div>
     </div>
 </template>
 
@@ -63,5 +72,10 @@ function getTranslateSuccess() {
     grid-template-rows: 200px auto;
     justify-content: center;
     place-items: center;
+}
+
+.card-row {
+    display: flex;
+    gap: 20px;
 }
 </style>
