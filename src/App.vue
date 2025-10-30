@@ -1,39 +1,39 @@
 <script setup>
 // import Button from "./components/Button.vue";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import Card from "./components/Card.vue";
 import Score from "./components/Score.vue";
+
+const API_ENDPOINT = "http://localhost:8080/api/random-words";
+
+let data = ref();
 
 let rate = ref({
     rating: "99",
 });
 
-const cards = ref([
-    {
-        word: "dust-coat",
-        translation: "Караван верблюдов",
-        state: "closed",
-        status: "pending",
-    },
-    {
-        word: "carom",
-        translation: "свинец",
-        state: "closed",
-        status: "pending",
-    },
-    {
-        word: "car",
-        translation: "Автомобиль",
-        state: "closed",
-        status: "pending",
-    },
-    {
-        word: "vino",
-        translation: "Вино",
-        state: "closed",
-        status: "pending",
-    },
-]);
+async function getCards() {
+    const res = await fetch(`${API_ENDPOINT}`);
+    data.value = await res.json();
+    data._rawValue.newKey = "countCard";
+    data._rawValue.newKey = "state";
+    data._rawValue.newKey = "status";
+
+    for (let i = 0; i < 10; i++) {
+        data._rawValue[i].state = "closed";
+        data._rawValue[i].status = "pending";
+        if (i < 9) {
+            data._rawValue[i].countCard = "0" + (i + 1);
+        } else {
+            data._rawValue[i].countCard = "10";
+        }
+    }
+    console.log(data._rawValue);
+}
+
+onBeforeMount(() => {
+    getCards();
+});
 
 function getRotate() {
     console.log("ROTATE");
@@ -54,8 +54,9 @@ function getTranslateSuccess() {
         <!-- <Button>Начать игру </Button> -->
         <div class="card-row">
             <Card
-                v-for="item in cards"
+                v-for="item in data"
                 v-bind="item"
+                :key="item.word"
                 @card-rotate="getRotate"
                 @card-wrong="getTranslateWrong"
                 @csardSuccess="getTranslateSuccess"
@@ -76,6 +77,7 @@ function getTranslateSuccess() {
 
 .card-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 </style>
