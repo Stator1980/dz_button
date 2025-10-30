@@ -9,26 +9,26 @@ const API_ENDPOINT = "http://localhost:8080/api/random-words";
 let data = ref();
 
 let rate = ref({
-    rating: "99",
+    rating: 0,
 });
 
 async function getCards() {
     const res = await fetch(`${API_ENDPOINT}`);
     data.value = await res.json();
-    data._rawValue.newKey = "countCard";
-    data._rawValue.newKey = "state";
-    data._rawValue.newKey = "status";
+    data.value.newKey = "countCard";
+    data.value.newKey = "state";
+    data.value.newKey = "status";
 
     for (let i = 0; i < 10; i++) {
-        data._rawValue[i].state = "closed";
-        data._rawValue[i].status = "pending";
+        data.value[i].state = "closed";
+        data.value[i].status = "pending";
         if (i < 9) {
-            data._rawValue[i].countCard = "0" + (i + 1);
+            data.value[i].countCard = "0" + (i + 1);
         } else {
-            data._rawValue[i].countCard = "10";
+            data.value[i].countCard = "10";
         }
     }
-    console.log(data._rawValue);
+    console.log(data.value);
 }
 
 onBeforeMount(() => {
@@ -44,7 +44,9 @@ function getTranslateWrong() {
 }
 
 function getTranslateSuccess() {
+    rate.value.rating++;
     console.log("TranslateSuccess");
+    console.log(rate.value.rating);
 }
 </script>
 
@@ -59,7 +61,7 @@ function getTranslateSuccess() {
                 :key="item.word"
                 @card-rotate="getRotate"
                 @card-wrong="getTranslateWrong"
-                @csardSuccess="getTranslateSuccess"
+                @card-success="getTranslateSuccess"
             />
         </div>
     </div>

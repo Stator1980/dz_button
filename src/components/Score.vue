@@ -2,8 +2,8 @@
 import IconHeart from "../icons/IconHeart.vue";
 import Button from "./Button.vue";
 
-const { rating = "100" } = defineProps({
-    rating: String,
+const { rating = 0 } = defineProps({
+    rating: Number,
 });
 </script>
 
