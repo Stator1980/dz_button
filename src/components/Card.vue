@@ -165,6 +165,7 @@ function translateSuccess() {
     text-transform: uppercase;
     background: var(--color-primary);
     padding: 0;
+    border: none;
 }
 
 .card-rotate-hide {
@@ -181,6 +182,7 @@ function translateSuccess() {
     color: var(--color-header);
     background: var(--color-primary);
     padding: 0;
+    border: none;
 }
 
 .bottom-card {

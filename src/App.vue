@@ -1,5 +1,5 @@
 <script setup>
-// import Button from "./components/Button.vue";
+import Button from "./components/Button.vue";
 import { onBeforeMount, ref } from "vue";
 import Card from "./components/Card.vue";
 import Score from "./components/Score.vue";
@@ -11,6 +11,8 @@ let data = ref();
 let rate = ref({
     rating: 0,
 });
+
+let isStart = ref(false);
 
 async function getCards() {
     const res = await fetch(`${API_ENDPOINT}`);
@@ -28,7 +30,7 @@ async function getCards() {
             data.value[i].countCard = "10";
         }
     }
-    console.log(data.value);
+    //console.log(data.value);
 }
 
 onBeforeMount(() => {
@@ -40,21 +42,30 @@ function getRotate() {
 }
 
 function getTranslateWrong() {
-    console.log("TranslateWrong");
+    rate.value.rating = rate.value.rating - 4;
 }
 
 function getTranslateSuccess() {
-    rate.value.rating++;
-    console.log("TranslateSuccess");
-    console.log(rate.value.rating);
+    rate.value.rating = rate.value.rating + 10;
+}
+
+function startGame() {
+    isStart.value = true;
+}
+
+function startAgain() {
+    rate.value.rating = 0;
+    getCards();
 }
 </script>
 
 <template>
     <div class="content">
         <Score v-bind="rate" />
-        <!-- <Button>Начать игру </Button> -->
-        <div class="card-row">
+        <Button v-if="!isStart" @click="startGame()" class="button_blue"
+            >Начать игру
+        </Button>
+        <div v-if="isStart" class="card-row">
             <Card
                 v-for="item in data"
                 v-bind="item"
@@ -64,6 +75,9 @@ function getTranslateSuccess() {
                 @card-success="getTranslateSuccess"
             />
         </div>
+        <Button v-if="isStart" @click="startAgain()" class="button_blue"
+            >Начать занова
+        </Button>
     </div>
 </template>
 
@@ -81,5 +95,20 @@ function getTranslateSuccess() {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    margin-bottom: 80px;
+}
+
+.button_blue {
+    border: none;
+    border-radius: 100px;
+    background: var(--color-bg-button-blue);
+    padding: 10px 16px;
+    font-family: var(--font);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--color-primary);
+    cursor: pointer;
+    width: 335px;
+    height: 68px;
 }
 </style>
